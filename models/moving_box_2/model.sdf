@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="moving_box">
+    <pose>0 0 0.501 0 0 0</pose> 
+    
+    <link name="link">
+      <inertial>
+        <mass>50.0</mass>
+        <inertia>
+          <ixx>8.333</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>8.333</iyy> <iyz>0</iyz> <izz>8.333</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="visual">
+        <geometry><box><size>0.25 0.25 0.5</size></box></geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Red</name>
+          </script>
+        </material>
+      </visual>
+
+      <collision name="collision">
+        <geometry><box><size>0.25 0.25 0.5</size></box></geometry>
+        
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.0</mu>    <mu2>0.0</mu2>  <slip1>1.0</slip1> <slip2>1.0</slip2>
+            </ode>
+          </friction>
+          <contact>
+             <ode>
+               <kp>10000000.0</kp> <kd>1.0</kd>        </ode>
+          </contact>
+        </surface>
+        </collision>
+    </link>
+
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <ros>
+        <namespace>/obstacle2</namespace> <remapping>cmd_vel:=cmd_vel</remapping>
+        <remapping>odom:=odom</remapping>
+      </ros>
+      <update_rate>100</update_rate>
+      <publish_odom>true</publish_odom>
+      <robot_base_frame>link</robot_base_frame>
+    </plugin>
+  </model>
+</sdf>
